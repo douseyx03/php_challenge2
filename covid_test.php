@@ -1,4 +1,5 @@
 <?php
+error_reporting(E_ALL);
 session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -14,6 +15,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Calcul du score en fonction des critères spécifiés
     $score = 0;
+    $scoreTotal = 0;
+
 
     if ($age == "0-12" || $age == "45plus") {
         $score += 15;
@@ -25,28 +28,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $score += 15;
     }
 
-    if ($maux_de_tete == "oui") {
+   if ($maux_de_tete == "oui") {
         $score += 17.5;
     }
-    
     if ($diarrhee == "oui") {
         $score += 17.5;
     }
-    
     if ($toux == "oui") {
         $score += 17.5;
     }
-    
     if ($perte_odorat == "oui") {
         $score += 17.5;
     }
+
+    if (isset($_SESSION["resultats"])) {
+        // Parcours de tous les résultats
+        foreach ($_SESSION["resultats"] as $resultat) {
+            // Ajout du score actuel à la somme totale
+            $scoreTotal += $resultat["score"];
 
     // Enregistrement des résultats dans la session
     $_SESSION["resultats"][] = [
         "date" => date("Y-m-d H:i:s"),
         "nom" => $nom,
         "prenom" => $prenom,
-        "score" => $score,
+        "score" => $scoreTotal,
+
     ];
 
     // Affichage des résultats
