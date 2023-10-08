@@ -25,7 +25,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $score += 15;
     }
 
-    if ($maux_de_tete == "oui" || $diarrhee == "oui" || $toux == "oui" || $perte_odorat == "oui") {
+    if ($maux_de_tete == "oui") {
+        $score += 17.5;
+    }
+    
+    if ($diarrhee == "oui") {
+        $score += 17.5;
+    }
+    
+    if ($toux == "oui") {
+        $score += 17.5;
+    }
+    
+    if ($perte_odorat == "oui") {
         $score += 17.5;
     }
 
