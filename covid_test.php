@@ -1,3 +1,102 @@
+<?php
+session_start();
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Récupération des données du formulaire
+    $nom = $_POST["nom"];
+    $prenom = $_POST["prenom"];
+    $age = $_POST["age"];
+    $temperature = $_POST["temperature"];
+    $maux_de_tete = $_POST["maux-de-tete"];
+    $diarrhee = $_POST["diarrhee"];
+    $toux = $_POST["toux"];
+    $perte_odorat = $_POST["perte-odorat"];
+
+    // Calcul du score en fonction des critères spécifiés
+    $score = 0;
+
+    if ($age == "0-12" || $age == "45plus") {
+        $score += 15;
+    }
+
+    if ($temperature == "38.0-40.0") {
+        $score += 5;
+    } elseif ($temperature == "40plus") {
+        $score += 15;
+    }
+
+    if ($maux_de_tete == "oui" || $diarrhee == "oui" || $toux == "oui" || $perte_odorat == "oui") {
+        $score += 17.5;
+    }
+
+    // Enregistrement des résultats dans la session
+    $_SESSION["resultats"][] = [
+        "date" => date("Y-m-d H:i:s"),
+        "nom" => $nom,
+        "prenom" => $prenom,
+        "score" => $score,
+    ];
+
+    // Affichage des résultats
+    echo "<h2>Résultats pour $nom $prenom :</h2>";
+    echo "<p>Score : $score%</p>";
+
+    // Affichage du message en fonction du score
+    if ($score >= 80) {
+        echo "<p>Résultat : Score critique. Veuillez consulter un médecin.</p>";
+    } elseif ($score >= 50) {
+        echo "<p>Résultat : Vous êtes susceptible.</p>";
+    } else {
+        echo "<p>Résultat : Vous êtes sain(e).</p>";
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Covid Test</title>
+    <!-- Styles CSS (identiques à ceux du formulaire) -->
+    <style>
+        /* ... (styles identiques) ... */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Covid Test</h2>
+        <form action="#" method="post">
+            <!-- (Le contenu du formulaire reste inchangé) -->
+        </form>
+    </div>
+    <div class="container">
+        <h2>Historique des résultats</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                if (isset($_SESSION["resultats"])) {
+                    foreach ($_SESSION["resultats"] as $resultat) {
+                        echo "<tr>";
+                        echo "<td>" . $resultat["date"] . "</td>";
+                        echo "<td>" . $resultat["nom"] . "</td>";
+                        echo "<td>" . $resultat["prenom"] . "</td>";
+                        echo "<td>" . $resultat["score"] . "%</td>";
+                        echo "</tr>";
+                    }
+                }
+                ?>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
 
 
 <!DOCTYPE html>
