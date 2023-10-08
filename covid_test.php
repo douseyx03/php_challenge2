@@ -42,10 +42,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if (isset($_SESSION["resultats"])) {
-        // Parcours de tous les résultats
-        foreach ($_SESSION["resultats"] as $resultat) {
-            // Ajout du score actuel à la somme totale
-            $scoreTotal += $resultat["score"];
+    // Parcours de tous les résultats
+    foreach ($_SESSION["resultats"] as $resultat) {
+        // Ajout du score actuel à la somme totale
+        $scoreTotal += $resultat["score"];
 
     // Enregistrement des résultats dans la session
     $_SESSION["resultats"][] = [
